@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://anglab.github.io',
+  site: 'https://joshanglab.github.io',
 });
       
