@@ -1,0 +1,204 @@
+# Pages CMS gives you an editing interface for the content below.
+# See https://pagescms.org/docs/quick-start/
+media:
+  input: public/images
+  output: /images
+  rename: safe
+  categories: [image]
+
+content:
+  - name: site
+    label: Homepage settings
+    type: file
+    path: src/data/site.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: lab_name
+        label: Lab name
+        type: string
+        required: true
+      - name: affiliation
+        label: Affiliation
+        type: string
+      - name: tagline
+        label: Tagline
+        type: string
+      - name: hero_title
+        label: Homepage headline
+        type: text
+        required: true
+      - name: hero_description
+        label: Homepage introduction
+        type: text
+      - name: hero_image
+        label: Homepage hero photo
+        type: image
+        description: Optional. Upload a landscape lab or microscopy image.
+      - name: intro_heading
+        label: Mission heading
+        type: string
+      - name: intro_text
+        label: Mission paragraph
+        type: text
+      - name: contact_note
+        label: Contact page introduction
+        type: text
+
+  - name: people
+    label: Team members & alumni
+    type: collection
+    path: src/content/people
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: name
+      fields: [name, role, status]
+      sort: [name, status]
+    fields:
+      - name: name
+        label: Full name
+        type: string
+        required: true
+      - name: role
+        label: Role / job title
+        type: string
+        required: true
+      - name: status
+        label: Membership
+        type: select
+        required: true
+        options:
+          values:
+            - name: current
+              label: Current member
+            - name: alumni
+              label: Alumni
+      - name: photo
+        label: Profile photograph
+        type: image
+      - name: bio
+        label: Short biography (shown on People page)
+        type: text
+      - name: years
+        label: Years in the lab (especially alumni)
+        type: string
+      - name: next_position
+        label: Current destination (alumni)
+        type: string
+      - name: website
+        label: Personal webpage (optional)
+        type: string
+      - name: order
+        label: Display order (1 first, 99 last)
+        type: number
+      - name: body
+        label: Longer profile text
+        type: rich-text
+
+  - name: news
+    label: News posts
+    type: collection
+    path: src/content/news
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      primary: title
+      fields: [title, date, draft]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Headline
+        type: string
+        required: true
+      - name: date
+        label: Publication date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: summary
+        label: Short summary (used on homepage)
+        type: text
+        required: true
+      - name: photo
+        label: Story photograph
+        type: image
+      - name: draft
+        label: Draft (hide from website)
+        type: boolean
+      - name: body
+        label: Full story
+        type: rich-text
+
+  - name: publications
+    label: Publications
+    type: collection
+    path: src/content/publications
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, journal, year]
+      sort: [year, title]
+      default:
+        sort: year
+        order: desc
+    fields:
+      - name: title
+        label: Paper title
+        type: string
+        required: true
+      - name: authors
+        label: Authors
+        type: text
+        required: true
+      - name: journal
+        label: Journal or publication venue
+        type: string
+        required: true
+      - name: year
+        label: Year
+        type: number
+        required: true
+      - name: doi
+        label: DOI (e.g. 10.1234/abcd)
+        type: string
+      - name: url
+        label: Alternative paper link (optional)
+        type: string
+      - name: highlighted
+        label: Highlighted publication
+        type: boolean
+
+  - name: research
+    label: Research topics
+    type: collection
+    path: src/content/research
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, order]
+    fields:
+      - name: title
+        label: Research area
+        type: string
+        required: true
+      - name: summary
+        label: Short description
+        type: text
+        required: true
+      - name: image
+        label: Research photograph / illustration
+        type: image
+      - name: order
+        label: Order on homepage
+        type: number
+      - name: body
+        label: Full research description
+        type: rich-text
