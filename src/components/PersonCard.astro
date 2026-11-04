@@ -1,0 +1,15 @@
+---
+const { member, compact = false } = Astro.props;
+const initials = member.data.name.split(' ').slice(0,2).map(s=>s[0]).join('').toUpperCase();
+---
+<article class:list={['person-card', { compact }]}>
+  <a class="person-photo" href={`/people/${member.id}/`} aria-label={`View ${member.data.name}'s profile`}>
+    {member.data.photo ? <img src={member.data.photo} alt={`Portrait of ${member.data.name}`} loading="lazy" /> : <span class="person-initials" aria-hidden="true">{initials}</span>}
+  </a>
+  <div class="person-copy">
+    <h3><a href={`/people/${member.id}/`}>{member.data.name}</a></h3>
+    <p class="person-role">{member.data.role}</p>
+    {member.data.bio && <p class="person-bio">{member.data.bio}</p>}
+    {member.data.status === 'alumni' && <p class="person-extra">{member.data.years}{member.data.next_position && <> · Now: {member.data.next_position}</>}</p>}
+  </div>
+</article>

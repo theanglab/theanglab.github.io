@@ -1,0 +1,47 @@
+---
+import site from '../data/site.json';
+import '../styles/global.css';
+const { title = '', description = site.hero_description } = Astro.props;
+const here = Astro.url.pathname;
+const links = [
+  ['Home', '/'], ['Research', '/research/'], ['People', '/people/'],
+  ['Publications', '/publications/'], ['News', '/news/'],
+  ['Join us', '/join-us/'], ['Contact', '/contact/']
+];
+const fullTitle = title ? `${title} | ${site.lab_name}` : `${site.lab_name} | Insect Genetics & Biotechnology`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#112c2a" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner wrap">
+        <a class="brand" href="/" aria-label="The Ang Lab home">
+          <span class="brand-mark" aria-hidden="true">A<span>.</span></span>
+          <span class="brand-copy"><strong>{site.lab_name}</strong><small>{site.affiliation}</small></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          {links.map(([name,href]) => (
+            <a href={href} aria-current={href === '/' ? (here === '/' ? 'page' : undefined) : (here.startsWith(href) ? 'page' : undefined)}>{name}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <div><strong>{site.lab_name}</strong><p>{site.affiliation}<br/>York, United Kingdom</p></div>
+        <div class="footer-links"><a href="/research/">Research</a><a href="/people/">People</a><a href="/publications/">Publications</a><a href="/contact/">Contact</a></div>
+        <p class="copyright">© {new Date().getFullYear()} The Ang Lab</p>
+      </div>
+    </footer>
+  </body>
+</html>

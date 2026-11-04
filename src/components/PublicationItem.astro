@@ -1,0 +1,8 @@
+---
+const { item } = Astro.props;
+const target = item.data.url || (item.data.doi ? `https://doi.org/${item.data.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//,'')}` : '');
+---
+<article class="publication-item">
+  <span class="pub-year">{item.data.year}</span>
+  <div class="pub-copy"><h3>{target ? <a href={target} target="_blank" rel="noopener noreferrer">{item.data.title} <span aria-hidden="true">↗</span></a> : item.data.title}</h3><p>{item.data.authors}</p><p class="pub-journal">{item.data.journal}</p></div>
+</article>

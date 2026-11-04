@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import PersonCard from '../../components/PersonCard.astro';
+import { getCollection } from 'astro:content';
+const members = (await getCollection('people')).sort((a,b)=>(a.data.order??99)-(b.data.order??99) || a.data.name.localeCompare(b.data.name));
+const current = members.filter(m=>m.data.status === 'current');
+const alumni = members.filter(m=>m.data.status === 'alumni');
+---
+<Layout title="People"><section class="page-head wrap"><p class="eyebrow">THE PEOPLE BEHIND THE SCIENCE</p><h1>Our people</h1><p>Meet the researchers and alumni who make The Ang Lab possible.</p></section>
+<section class="section-space wrap"><div class="section-heading"><div><p class="eyebrow">THE TEAM</p><h2>Current members</h2></div></div><div class="people-grid">{current.map(m=><PersonCard member={m}/>)}</div></section>
+<section class="cream-section section-space"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">OUR COMMUNITY</p><h2>Lab alumni</h2></div><p class="section-intro">Former members remain part of the lab's story.</p></div>{alumni.length ? <div class="alumni-grid">{alumni.map(m=><PersonCard member={m} compact />)}</div> : <p class="empty-note">Alumni profiles will be added here as the group grows.</p>}</div></section></Layout>

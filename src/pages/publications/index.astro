@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import PublicationItem from '../../components/PublicationItem.astro';
+import { getCollection } from 'astro:content';
+const publications = (await getCollection('publications')).sort((a,b)=>b.data.year-a.data.year || a.data.title.localeCompare(b.data.title));
+const years = [...new Set(publications.map(p=>p.data.year))];
+---
+<Layout title="Publications"><section class="page-head wrap"><p class="eyebrow">OUR RESEARCH OUTPUTS</p><h1>Publications</h1><p>Peer-reviewed research, methods and scientific contributions.</p></section><section class="cream-section section-space"><div class="wrap pub-years">{publications.length ? years.map(year=><section class="pub-year-group"><h2>{year}</h2><div class="pub-stack">{publications.filter(p=>p.data.year===year).map(p=><PublicationItem item={p}/>)}</div></section>) : <p class="empty-note">Our publication list is being prepared. Please check back soon.</p>}</div></section></Layout>

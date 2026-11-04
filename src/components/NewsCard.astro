@@ -1,0 +1,9 @@
+---
+const { item, compact = false } = Astro.props;
+const date = item.data.date.toLocaleDateString('en-GB', { month:'short', year:'numeric', timeZone:'UTC' });
+---
+<article class:list={['news-item', { compact }]}>
+  {item.data.photo ? <a class="news-thumb" href={`/news/${item.id}/`}><img src={item.data.photo} alt="" loading="lazy" /></a> : <span class="news-date-mark" aria-hidden="true">✳</span>}
+  <div class="news-item-body"><span class="meta">{date}</span><h3><a href={`/news/${item.id}/`}>{item.data.title}</a></h3><p>{item.data.summary}</p></div>
+  <a class="circle-arrow" href={`/news/${item.id}/`} aria-label={`Read ${item.data.title}`}>↗</a>
+</article>

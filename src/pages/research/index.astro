@@ -1,0 +1,6 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const topics = (await getCollection('research')).sort((a,b)=>(a.data.order??99)-(b.data.order??99));
+---
+<Layout title="Research"><section class="page-head wrap"><p class="eyebrow">WHAT WE DO</p><h1>Research</h1><p>We bring together insect genetics, molecular biology and engineering to understand and harness biological systems.</p></section><section class="cream-section section-space"><div class="wrap feature-list">{topics.map((topic,i)=>(<article class="feature-row"><div class="feature-media">{topic.data.image ? <img src={topic.data.image} alt="" loading="lazy" /> : <span aria-hidden="true">{String(i+1).padStart(2,'0')}</span>}</div><div><span class="meta">RESEARCH THEME {String(i+1).padStart(2,'0')}</span><h2><a href={`/research/${topic.id}/`}>{topic.data.title}</a></h2><p>{topic.data.summary}</p><a class="text-link" href={`/research/${topic.id}/`}>Read more ↗</a></div></article>))}</div></section></Layout>

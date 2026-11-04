@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const entries = await getCollection('people');
+  return entries.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<Layout title={entry.data.name} description={entry.data.bio || `Meet ${entry.data.name} of The Ang Lab.`}>
+<section class="page-head wrap"><a href="/people/" class="back-link">← All people</a><p class="eyebrow">{entry.data.status === 'current' ? 'CURRENT MEMBER' : 'ALUMNI'}</p><h1>{entry.data.name}</h1><p>{entry.data.role}</p></section>
+<section class="wrap profile-detail section-space"><div class="profile-detail-photo">{entry.data.photo ? <img src={entry.data.photo} alt={`Portrait of ${entry.data.name}`} /> : <div class="photo-placeholder">{entry.data.name.split(' ').map(s=>s[0]).slice(0,2).join('')}</div>}</div><div><p class="lead-copy">{entry.data.bio}</p>{entry.data.years && <p><strong>Years in the lab:</strong> {entry.data.years}</p>}{entry.data.next_position && <p><strong>Next role:</strong> {entry.data.next_position}</p>}{entry.data.website && <p><a class="text-link" href={entry.data.website}>Personal website ↗</a></p>}<article class="prose"><Content /></article></div></section>
+</Layout>

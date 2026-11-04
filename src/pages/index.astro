@@ -1,236 +1,53 @@
 ---
-const researchAreas = [
-  {
-    number: '',
-    title: '',
-    description: 'Understanding and engineering the genetic systems that shape insect biology.'
-  },
-  {
-    number: '02',
-    title: 'Synthetic biology',
-    description: 'Developing new genetic tools and approaches to make insect biology more programmable.'
-  },
-  {
-    number: '03',
-    title: 'Sustainable biotechnology',
-    description: 'Exploring insects as scalable platforms for innovative and more sustainable biomanufacturing.'
-  }
-];
+import Layout from '../layouts/BaseLayout.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import site from '../data/site.json';
+import { getCollection } from 'astro:content';
+const allNews = (await getCollection('news')).filter(n => !n.data.draft).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
+const papers = (await getCollection('publications')).sort((a,b)=>b.data.year-a.data.year).slice(0,3);
+const topics = (await getCollection('research')).sort((a,b)=>(a.data.order??99)-(b.data.order??99));
 ---
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="The Ang Lab at the University of York explores insect genetics, synthetic biology and sustainable biotechnology." />
-    <meta name="theme-color" content="#102827" />
-    <title>The Ang Lab | Insect Genetics & Biotechnology</title>
-  </head>
-  <body>
-    <header class="header">
-      <a class="logo" href="/" aria-label="The Ang Lab homepage">
-        <span class="logo-symbol">A<span class="logo-dot">.</span></span>
-        <span>THE ANG LAB</span>
-      </a>
-      <nav aria-label="Main navigation">
-        <a href="#research">Research</a>
-        <a href="#people">People</a>
-        <a href="#publications">Publications</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero" aria-labelledby="hero-heading">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot"></span> RESEARCH GROUP · UNIVERSITY OF YORK</p>
-          <h1 id="hero-heading">Engineering <em>Biology</em> for Human and Planetary Health. </h1>
-          <p class="hero-description">
-            How many of the human and planetary health challenges we face today are the result of humanity’s past actions, 
-            or inaction? Now that we have entered an era in which we can precisely engineer biology to address these challenges, 
-            will we develop the solutions? And if we can, will we choose to use them?
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#research">Explore our research <span aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="#people">Meet the lab <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="orb orb-one"></div>
-          <div class="orb orb-two"></div>
-          <div class="orb orb-three"></div>
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <span class="art-label art-label-top">INSECT GENETICS / 01</span>
-          <span class="art-label art-label-bottom">BIOLOGY · ENGINEERED</span>
-        </div>
-      </section>
-
-      <section class="intro section-pad" aria-label="Our mission">
-        <div class="section-tag">OUR VISION AND MISSION / 01</div>
-        <p class="intro-statement">Applying synthetic biology to solve <span>real world problems.</span></p>
-        <p class="intro-copy">At The Ang Lab, we combine fundamental biological discovery with engineering-led thinking, connecting genetics, insects and real-world applications.</p>
-      </section>
-
-      <section class="research section-pad" id="research" aria-labelledby="research-heading">
-        <div class="section-top">
-          <div>
-            <p class="section-tag">WHAT WE DO / 02</p>
-            <h2 id="research-heading">Our research</h2>
-          </div>
-          <p>From genetic technologies to new ways of making useful biomolecules, we investigate the potential of insects.</p>
-        </div>
-        <div class="research-grid">
-          {researchAreas.map((area) => (
-            <article class="research-card">
-              <span class="card-number">{area.number} / RESEARCH AREA</span>
-              <div class="card-art" aria-hidden="true"><span>✳</span></div>
-              <h3>{area.title}</h3>
-              <p>{area.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section class="people section-pad" id="people" aria-labelledby="people-heading">
-        <p class="section-tag">THE PEOPLE / 03</p>
-        <div class="people-content">
-          <div>
-            <h2 id="people-heading">Curiosity is a team effort.</h2>
-            <p>Our research brings together molecular biology, genetics and biotechnology. We welcome scientific collaboration and conversations with people who see new possibilities in insect biology.</p>
-          </div>
-          <div class="profile">
-            <div class="profile-avatar" aria-hidden="true">JA</div>
-            <div>
-              <strong>Joshua Ang</strong>
-              <span>Group Leader · University of York</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="publications section-pad" id="publications" aria-labelledby="publications-heading">
-        <p class="section-tag">KNOWLEDGE SHARED / 04</p>
-        <div class="section-top">
-          <h2 id="publications-heading">Publications & discoveries</h2>
-          <p>Our peer-reviewed research and ongoing scientific contributions.</p>
-        </div>
-        <div class="publication-placeholder">
-          <span>SELECTED PUBLICATIONS</span>
-          <p>We're preparing a curated list of publications. Check back soon for our latest work.</p>
-          <span class="publication-arrow" aria-hidden="true">↗</span>
-        </div>
-      </section>
-
-      <section class="contact section-pad" id="contact" aria-labelledby="contact-heading">
-        <p class="section-tag">LET'S CONNECT / 05</p>
-        <h2 id="contact-heading">Science moves forward <em>together.</em></h2>
-        <p>Interested in research, collaboration or joining the group? We are based at the University of York, United Kingdom.</p>
-        <a class="button button-contact" href="https://www.york.ac.uk/">University of York <span aria-hidden="true">↗</span></a>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <span>© {new Date().getFullYear()} The Ang Lab</span>
-      <span>University of York · United Kingdom</span>
-      <a href="#">Back to top ↑</a>
-    </footer>
-  </body>
-</html>
-
-<style is:global>
-  :root { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #15312f; background: #f7f6f1; font-synthesis: none; }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; }
-  a { color: inherit; text-decoration: none; }
-  h1,h2,h3,p { margin-top: 0; }
-  h1,h2,h3 { letter-spacing: -.055em; }
-  .header { background: #102827; color: #f8f9f1; display: flex; align-items: center; justify-content: space-between; padding: 24px min(6vw, 94px); position: relative; z-index: 10; }
-  .logo { display: flex; align-items: center; gap: 12px; font-size: .88rem; font-weight: 800; letter-spacing: .18em; white-space: nowrap; }
-  .logo-symbol { display: inline-grid; place-items: center; width: 38px; height: 38px; border: 1px solid #84c9a0; border-radius: 100%; font-size: 1.3rem; letter-spacing: -.1em; }
-  .logo-dot { color: #9bdfad; }
-  nav { display: flex; flex-wrap: wrap; gap: clamp(13px, 2.6vw, 38px); }
-  nav a { font-size: .86rem; color: #d6e3dc; transition: color .15s ease; }
-  nav a:hover, nav a:focus-visible { color: #a6ecb3; }
-  .hero { background: #102827; color: #f8f9f1; min-height: 650px; display: grid; grid-template-columns: 1.2fr .8fr; overflow: hidden; }
-  .hero-copy { padding: 115px 0 110px min(6vw, 94px); position: relative; z-index: 2; }
-  .eyebrow,.section-tag { font-size: .73rem; font-weight: 750; letter-spacing: .18em; }
-  .eyebrow { display: flex; align-items: center; gap: 11px; color: #abd8b8; margin-bottom: 30px; }
-  .status-dot { width: 7px; height: 7px; background: #b1e5a3; border-radius: 50%; box-shadow: 0 0 13px #b1e5a377; }
-  h1 { font-size: clamp(3.4rem, 6.2vw, 6.9rem); font-weight: 650; line-height: 1.04; max-width: 850px; margin-bottom: 28px; }
-  h1 em, .contact h2 em { font-family: Georgia, serif; font-weight: 400; color: #a6dab1; }
-  .hero-description { font-size: 1.1rem; line-height: 1.7; color: #d1ded7; max-width: 570px; margin-bottom: 37px; }
-  .hero-actions { display: flex; gap: 13px; flex-wrap: wrap; }
-  .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 35px; padding: 16px 22px; font-size: .88rem; font-weight: 700; border-radius: 3px; }
-  .button-primary { color: #102827; background: #b4e8b7; }
-  .button-primary:hover { background: #d2f4d4; }
-  .button-secondary { border: 1px solid #648079; color: #f6fff9; }
-  .button-secondary:hover { border-color: #b4e8b7; }
-  .hero-art { position: relative; min-height: 520px; overflow: hidden; background: radial-gradient(circle at 49% 49%, #2d7061 0%, #19453d 30%, #102827 67%); }
-  .hero-art::before { content: ''; position: absolute; inset: 0; opacity: .13; background-image: radial-gradient(#d3ffd3 1px, transparent 1px); background-size: 20px 20px; }
-  .orb { position: absolute; border-radius: 50%; filter: blur(2px); box-shadow: inset 12px -24px 70px #153c36aa, 0 0 72px #76d5a233; }
-  .orb-one { width: 330px; height: 330px; left: 13%; top: 23%; background: radial-gradient(circle at 35% 30%, #c0f1ba, #579e82 47%, #245d54 77%); }
-  .orb-two { width: 150px; height: 150px; left: 57%; top: 11%; background: radial-gradient(circle at 30% 30%, #d6efad, #4b9582 70%); opacity: .75; }
-  .orb-three { width: 95px; height: 95px; left: 56%; top: 70%; background: radial-gradient(circle at 30% 30%, #c1eb9c, #367665 75%); }
-  .orbit { position: absolute; border: 1px solid #b8ecbd52; border-radius: 50%; transform: rotate(-24deg); }
-  .orbit-one { width: 540px; height: 310px; left: -3%; top: 25%; }
-  .orbit-two { width: 380px; height: 570px; left: 13%; top: 4%; }
-  .art-label { position: absolute; font-size: .66rem; letter-spacing: .17em; color: #bde1ca; }
-  .art-label-top { top: 14%; left: 9%; } .art-label-bottom { bottom: 12%; right: 8%; }
-  .section-pad { padding: 105px min(6vw, 94px); }
-  .section-tag { color: #3e7970; margin-bottom: 24px; }
-  .intro { background: #f7f6f1; display: grid; grid-template-columns: .26fr .9fr .7fr; gap: 34px; align-items: start; }
-  .intro-statement { font-size: clamp(2.6rem, 4.4vw, 4.6rem); line-height: 1.12; letter-spacing: -.06em; font-weight: 650; margin: 0; }
-  .intro-statement span { color: #51907e; }
-  .intro-copy { max-width: 390px; color: #5a6965; font-size: 1rem; line-height: 1.9; padding-top: 6px; }
-  .research { background: #e9efe8; }
-  .section-top { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 43px; }
-  .section-top h2, .people h2, .contact h2 { font-size: clamp(2.8rem, 4.6vw, 5rem); line-height: 1.1; margin-bottom: 0; max-width: 720px; }
-  .section-top > p { max-width: 345px; color: #60706c; line-height: 1.7; margin: 0; }
-  .research-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
-  .research-card { background: #fafbf6; padding: 28px; min-height: 390px; display: flex; flex-direction: column; border: 1px solid #dce5db; }
-  .card-number { font-size: .7rem; color: #6d9382; font-weight: 750; letter-spacing: .14em; }
-  .card-art { flex: 1; display: grid; place-items: center; color: #659e89; font-size: 6rem; font-family: Georgia, serif; }
-  .research-card:nth-child(2) .card-art { color: #95bca0; } .research-card:nth-child(3) .card-art { color: #aac786; }
-  .research-card h3 { font-size: 1.6rem; line-height: 1.2; margin-bottom: 10px; }
-  .research-card p { line-height: 1.6; color: #65736e; font-size: .92rem; margin: 0; }
-  .people { background: #f7f6f1; }
-  .people-content { display: grid; grid-template-columns: 1fr .65fr; gap: 60px; align-items: center; }
-  .people-content > div > p { line-height: 1.85; color: #596e66; max-width: 600px; margin: 26px 0 0; }
-  .profile { display: flex; align-items: center; gap: 21px; padding: 30px; border: 1px solid #dce4dc; background: #fff; }
-  .profile-avatar { background: linear-gradient(130deg,#174d49,#91bba0); color: #fff; width: 100px; aspect-ratio: 1; display: grid; place-items: center; font-family: Georgia,serif; font-size: 2.3rem; border-radius: 100%; flex: none; }
-  .profile strong, .profile span { display: block; } .profile strong { font-size: 1.35rem; margin-bottom: 7px; } .profile span { color: #71817a; font-size: .85rem; line-height: 1.5; }
-  .publications { background: #e9efe8; }
-  .publication-placeholder { background: #f8faf4; border-top: 2px solid #477a6b; min-height: 170px; display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 30px; }
-  .publication-placeholder > span:first-child { font-size: .74rem; font-weight: 800; letter-spacing: .13em; white-space: nowrap; }
-  .publication-placeholder p { max-width: 480px; color: #63756e; line-height: 1.7; margin: 0; }
-  .publication-arrow { font-size: 2rem; color: #4f8272; }
-  .contact { background: #102827; color: white; }
-  .contact .section-tag { color: #a5d4b4; }
-  .contact h2 { max-width: 900px; }
-  .contact > p:not(.section-tag) { max-width: 570px; line-height: 1.8; color: #c2d3cc; margin: 27px 0 30px; }
-  .button-contact { background: #b4e8b7; color: #102827; }
-  .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; background: #0b201f; color: #bbccc3; padding: 30px min(6vw, 94px); font-size: .8rem; }
-  .footer a:hover { color: #fff; }
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; } .hero-copy { padding: 80px 7vw 65px; } .hero-art { min-height: 300px; }
-    .orb-one { left: 37%; top: 6%; width: 260px; height: 260px; } .orb-two { left: 68%; top: 0; } .orb-three { left: 29%; top: 66%; }
-    .intro { grid-template-columns: 1fr; gap: 18px; } .intro-copy { max-width: 650px; }
-    .people-content { grid-template-columns: 1fr; gap: 35px; } .research-grid { grid-template-columns: 1fr; }
-    .research-card { min-height: 280px; } .card-art { font-size: 4rem; }
-  }
-  @media (max-width: 600px) {
-    .header { padding: 22px 6vw; align-items: flex-start; flex-direction: column; gap: 22px; }
-    nav { gap: 19px; } nav a { font-size: .78rem; }
-    h1 { font-size: clamp(3rem, 12vw, 4.2rem); }
-    .hero-copy { padding: 62px 6vw; } .hero-description { font-size: 1rem; }
-    .hero-art { min-height: 230px; } .orb-one { left: 28%; width: 220px; height: 220px; } .orb-two { left: 64%; width: 100px; height: 100px; }
-    .section-pad { padding: 72px 6vw; } .section-top { display: block; } .section-top > p { margin-top: 20px; }
-    .publication-placeholder { display: block; } .publication-placeholder p { margin-top: 15px; } .publication-arrow { display: none; }
-    .profile { padding: 22px; } .profile-avatar { width: 75px; font-size: 1.8rem; }
-  }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-</style>
-
+<Layout>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-light">RESEARCH GROUP · UNIVERSITY OF YORK</p>
+        <h1>{site.hero_title}</h1>
+        <p class="hero-lead">{site.hero_description}</p>
+        <div class="button-row"><a class="button button-mint" href="/research/">Explore our research <span aria-hidden="true">↗</span></a><a class="button button-outline" href="/people/">Meet the team <span aria-hidden="true">→</span></a></div>
+      </div>
+      <div class:list={['hero-visual', {'hero-with-photo': Boolean(site.hero_image)}]}>
+        {site.hero_image ? <img src={site.hero_image} alt="Ang Lab research image" /> : <div class="hero-rings" aria-hidden="true"><span></span><span></span><span></span></div>}
+        <span class="hero-photo-caption">INSECT BIOLOGY / REIMAGINED</span>
+      </div>
+    </div>
+  </section>
+  <section class="intro-section wrap section-space">
+    <p class="eyebrow">THE LAB / 01</p>
+    <div><h2>{site.intro_heading}</h2><p>{site.intro_text}</p></div>
+  </section>
+  <section class="cream-section section-space">
+    <div class="wrap"><SectionTitle eyebrow="OUR WORK / 02" title="Research themes" intro="From understanding insect systems to engineering new possibilities." />
+      <div class="theme-grid">{topics.map((topic,i)=>(
+        <a href={`/research/${topic.id}/`} class="theme-card">
+          <div class="theme-image">{topic.data.image ? <img src={topic.data.image} alt="" loading="lazy" /> : <span class="theme-shape" aria-hidden="true">{String(i+1).padStart(2,'0')}</span>}</div>
+          <div class="theme-copy"><span class="meta">RESEARCH {String(i+1).padStart(2,'0')}</span><h3>{topic.data.title}</h3><p>{topic.data.summary}</p><span class="theme-link">Explore →</span></div>
+        </a>
+      ))}</div>
+    </div>
+  </section>
+  <section class="section-space wrap news-preview">
+    <SectionTitle eyebrow="FROM THE LAB / 03" title="Latest news" intro="Updates from our people, research and lab life." />
+    {allNews.length ? <div class="news-stack">{allNews.slice(0,4).map(n=><NewsCard item={n} compact />)}</div> : <p class="empty-note">Lab news will appear here soon.</p>}
+    <a class="text-link" href="/news/">View all news <span aria-hidden="true">↗</span></a>
+  </section>
+  <section class="cream-section section-space">
+    <div class="wrap"><SectionTitle eyebrow="KNOWLEDGE SHARED / 04" title="Recent publications" intro="Peer-reviewed research and scientific contributions." />
+      {papers.length ? <div class="pub-stack">{papers.map(p=><PublicationItem item={p} />)}</div> : <p class="empty-note">Selected publications will be added here shortly.</p>}
+      <a class="text-link" href="/publications/">All publications <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <section class="join-band"><div class="wrap join-inner"><div><p class="eyebrow eyebrow-light">WORK WITH US</p><h2>Curiosity moves science forward.</h2><p>We are always interested in exchanging ideas with researchers and potential collaborators.</p></div><a class="button button-mint" href="/join-us/">Join the conversation <span aria-hidden="true">↗</span></a></div></section>
+</Layout>

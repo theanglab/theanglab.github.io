@@ -1,0 +1,7 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getCollection } from 'astro:content';
+const entries = (await getCollection('news')).filter(n=>!n.data.draft).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+---
+<Layout title="News"><section class="page-head wrap"><p class="eyebrow">STORIES FROM THE LAB</p><h1>News & updates</h1><p>Publications, people, research milestones and life in the lab.</p></section><section class="cream-section section-space"><div class="wrap news-stack news-index">{entries.length ? entries.map(item=><NewsCard item={item}/>) : <p class="empty-note">News stories will appear here soon.</p>}</div></section></Layout>
